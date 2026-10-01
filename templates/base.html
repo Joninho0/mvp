@@ -1,0 +1,74 @@
+  <!DOCTYPE html>
+{% load static %}
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Bank MVP{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .htmx-request .htmx-indicator { display: inline-block; }
+        .htmx-indicator { display: none; }
+        .fade-in { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    {% if user.is_authenticated %}
+    <nav class="bg-blue-600 text-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-4">
+                    <a href="{% url 'dashboard' %}" class="text-xl font-bold">
+                        <i class="fas fa-university mr-2"></i>Bank MVP
+                    </a>
+                </div>
+                <div class="flex items-center space-x-6">
+                    <a href="{% url 'dashboard' %}" class="hover:text-blue-200">
+                        <i class="fas fa-home mr-1"></i>Dashboard
+                    </a>
+                    <a href="{% url 'accounts:list' %}" class="hover:text-blue-200">
+                        <i class="fas fa-wallet mr-1"></i>Contas
+                    </a>
+                    <a href="{% url 'transactions:list' %}" class="hover:text-blue-200">
+                        <i class="fas fa-exchange-alt mr-1"></i>Transacoes
+                    </a>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-sm">{{ user.email }}</span>
+                        <form action="{% url 'logout' %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="bg-blue-700 px-3 py-1 rounded hover:bg-blue-800">
+                                <i class="fas fa-sign-out-alt"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    {% endif %}
+
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        {% if messages %}
+        <div class="mb-6">
+            {% for message in messages %}
+            <div class="p-4 rounded mb-2 {% if message.tags == 'success' %}bg-green-100 text-green-800{% elif message.tags == 'error' %}bg-red-100 text-red-800{% else %}bg-blue-100 text-blue-800{% endif %}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="bg-gray-800 text-gray-400 py-6 mt-12">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p>Bank MVP - Demonstrando arquiteturas MVT, Microservices e Serverless</p>
+            <p class="text-sm mt-2">© 2026 Bank MVP. Apenas para fins educacionais.</p>
+        </div>
+    </footer>
+</body>
+</html>

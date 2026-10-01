@@ -1,0 +1,130 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bank-mvt-django"
+version = "0.1.0"
+description = "Banco digital MVP - Arquitetura MVT com Django"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+authors = [
+    {name = "MVP Developer", email = "dev@bank.local"}
+]
+keywords = ["django", "bank", "mvt", "finance", "ledger"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Framework :: Django :: 5.0",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+dependencies = [
+    # Framework
+    "django>=5.0,<6.0",
+    "djangorestframework>=3.14,<4.0",
+    "django-htmx>=1.17,<2.0",
+    "drf-spectacular>=0.27,<1.0",
+
+    # Database
+    "psycopg[binary]>=3.1,<4.0",
+    "django-environ>=0.11,<1.0",
+    "dj-database-url>=2.1,<3.0",
+
+    # Async / Celery
+    "celery>=5.3,<6.0",
+    "redis>=5.0,<6.0",
+    "django-celery-beat>=2.5,<3.0",
+    "django-celery-results>=2.5,<3.0",
+
+    # Security
+    "djangorestframework-simplejwt>=5.3,<6.0",
+    "argon2-cffi>=23.1,<24.0",
+    "django-axes>=6.4,<7.0",
+    "django-ratelimit>=4.1,<5.0",
+    "django-otp>=1.4,<2.0",
+    "cryptography>=41.0,<43.0",
+    "django-csp>=4.0,<5.0",
+    "django-cors-headers>=4.3,<5.0",
+
+    # Observability
+    "structlog>=24.1,<25.0",
+    "django-structlog>=4.0,<5.0",
+    "django-prometheus>=2.3,<3.0",
+    "sentry-sdk>=1.39,<2.0",
+    "opentelemetry-instrumentation-django>=0.44b0,<1.0",
+
+    # Server
+    "gunicorn>=21.2,<22.0",
+    "whitenoise>=6.6,<7.0",
+
+    # Testing
+    "pytest>=8.0,<9.0",
+    "pytest-django>=4.7,<5.0",
+    "pytest-cov>=4.1,<5.0",
+    "factory-boy>=3.3,<4.0",
+    "hypothesis>=6.97,<7.0",
+    "freezegun>=1.2,<2.0",
+    "locust>=2.25,<3.0",
+
+    # Quality
+    "ruff>=0.1,<1.0",
+    "mypy>=1.7,<2.0",
+    "django-stubs>=4.2,<5.0",
+    "bandit>=1.7,<2.0",
+    "pip-audit>=2.7,<3.0",
+    "pre-commit>=3.6,<4.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest-watch",
+    "django-debug-toolbar",
+    "ipdb",
+]
+docs = [
+    "mkdocs",
+    "mkdocs-material",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "W"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true
+plugins = ["django_stubs.plugin"]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings.test"
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
+testpaths = ["tests"]
+
+[tool.coverage.run]
+source = ["apps", "core"]
+omit = ["*/tests/*", "*/migrations/*"]
+
+[tool.coverage.report]
+exclude_lines = ["pragma: no cover", "if TYPE_CHECKING:", "@abstractmethod"]
+
+[tool.celery]
+beat-scheduler = "django_celery_beat.schedulers:DatabaseScheduler"
+
+[tool.django]
+classic = false

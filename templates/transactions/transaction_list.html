@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+{% block title %}Transações - Bank MVP{% endblock %}
+
+{% block content %}
+<div class="fade-in">
+    <div class="flex justify-between items-center mb-8">
+        <h1 class="text-3xl font-bold text-gray-800">
+            <i class="fas fa-exchange-alt mr-2 text-blue-600"></i>Transações
+        </h1>
+        <div class="flex gap-2">
+            <a href="{% url 'transactions:deposit' %}" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">
+                <i class="fas fa-plus mr-1"></i>Depositar
+            </a>
+            <a href="{% url 'transactions:transfer' %}" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+                <i class="fas fa-exchange-alt mr-1"></i>Transferir
+            </a>
+        </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="bg-white p-4 rounded-lg shadow mb-6">
+        <form method="get" class="flex flex-wrap gap-4 items-end">
+            <div>
+                <label class="block text-sm text-gray-600 mb-1">Tipo</label>
+                <select name="type" class="border rounded px-3 py-2">
+                    <option value="">Todos</option>
+                    <option value="DEPOSIT" {% if request.GET.type == 'DEPOSIT' %}selected{% endif %}>Depósito</option>
+                    <option value="WITHDRAWAL" {% if request.GET.type == 'WITHDRAWAL' %}selected{% endif %}>Saque</option>
+                    <option value="TRANSFER" {% if request.GET.type == 'TRANSFER' %}selected{% endif %}>Transferência</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm text-gray-600 mb-1">Status</label>
+                <select name="status" class="border rounded px-3 py-2">
+                    <option value="">Todos</option>
+                    <option value="COMPLETED" {% if request.GET.status == 'COMPLETED' %}selected{% endif %}>Concluídos</option>
+                    <option value="PENDING" {% if request.GET.status == 'PENDING' %}selected{% endif %}>Pendentes</option>
+                    <option value="FAILED" {% if request.GET.status == 'FAILED' %}selected{% endif %}>Falhos</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm text-gray-600 mb-1">Data</label>
+                <input type="date" name="date" value="{{ request.GET.date }}" class="border rounded px-3 py-2">
+            </div>
+            <button type="submit" class="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700">
+                <i class="fas fa-filter mr-1"></i>Filtrar
+            </button>
+            <a href="{% url 'transactions:list' %}" class="bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300">
+                Limpar
+            </a>
+        </form>
+    </div>
+
+    {% if transactions %}
+    <div class="bg-white rounded-lg shadow overflow-hidden">
+        <table class="w-full">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Data</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tipo</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Referência</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Conta</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Valor</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+                {% for tx in transactions %}
+                <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {{ tx.created_at|date:"d/m/Y H:i" }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 py-1 text-xs rounded-full {% if tx.transaction_type == 'DEPOSIT' %}bg-green-100 text-green-800{% elif tx.transaction_type == 'WITHDRAWAL' %}bg-red-100 text-red-800{% else %}bg-blue-100 text-blue-800{% endif %}">
+                            {{ tx.get_transaction_type_display }}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-800">
+                        {{ tx.reference|default:"-" }}
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-500">
+                        {% if tx.source_account %}
+                        {{ tx.source_account.account_number }}
+                        {% endif %}
+                        {% if tx.destination_account and tx.source_account != tx.destination_account %}
+                        → {{ tx.destination_account.account_number }}
+                        {% endif %}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 py-1 text-xs rounded-full {% if tx.status == 'COMPLETED' %}bg-green-100 text-green-800{% elif tx.status == 'PENDING' or tx.status == 'PROCESSING' %}bg-yellow-100 text-yellow-800{% elif tx.status == 'FAILED' or tx.status == 'REJECTED' %}bg-red-100 text-red-800{% else %}bg-gray-100 text-gray-800{% endif %}">
+                            {{ tx.get_status_display }}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right">
+                        <span class="font-bold {% if tx.transaction_type == 'DEPOSIT' %}text-green-600{% elif tx.transaction_type == 'WITHDRAWAL' %}text-red-600{% else %}text-blue-600{% endif %}">
+                            {% if tx.transaction_type == 'DEPOSIT' %}+{% elif tx.transaction_type == 'WITHDRAWAL' %}-{% endif %}{{ tx.amount }}
+                        </span>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Paginação -->
+    <div class="mt-6 flex justify-center">
+        <div class="flex gap-2">
+            {% if transactions.has_previous %}
+            <a href="?page=1" class="px-3 py-2 border rounded hover:bg-gray-100">&laquo;</a>
+            <a href="?page={{ transactions.previous_page_number }}" class="px-3 py-2 border rounded hover:bg-gray-100">&lsaquo;</a>
+            {% endif %}
+
+            <span class="px-3 py-2">
+                Página {{ transactions.number }} de {{ transactions.paginator.num_pages }}
+            </span>
+
+            {% if transactions.has_next %}
+            <a href="?page={{ transactions.next_page_number }}" class="px-3 py-2 border rounded hover:bg-gray-100">&rsaquo;</a>
+            <a href="?page={{ transactions.paginator.num_pages }}" class="px-3 py-2 border rounded hover:bg-gray-100">&raquo;</a>
+            {% endif %}
+        </div>
+    </div>
+    {% else %}
+    <div class="bg-white p-12 rounded-lg shadow text-center">
+        <i class="fas fa-exchange-alt text-6xl text-gray-300 mb-4"></i>
+        <h2 class="text-xl font-bold text-gray-600 mb-2">Nenhuma transação encontrada</h2>
+        <p class="text-gray-500 mb-6">Faça sua primeira transação para começar</p>
+        <a href="{% url 'transactions:deposit' %}" class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 inline-block">
+            <i class="fas fa-plus mr-2"></i>Depositar
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

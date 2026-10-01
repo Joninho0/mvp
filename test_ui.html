@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank MVP - Teste de UI</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .htmx-request .htmx-indicator { display: inline-block; }
+        .htmx-indicator { display: none; }
+        .fade-in { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-blue-600 text-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-4">
+                    <a href="#" class="text-xl font-bold">
+                        <i class="fas fa-university mr-2"></i>Bank MVP
+                    </a>
+                </div>
+                <div class="flex items-center space-x-6">
+                    <a href="#" class="hover:text-blue-200">
+                        <i class="fas fa-home mr-1"></i>Dashboard
+                    </a>
+                    <a href="#" class="hover:text-blue-200">
+                        <i class="fas fa-wallet mr-1"></i>Contas
+                    </a>
+                    <a href="#" class="hover:text-blue-200">
+                        <i class="fas fa-exchange-alt mr-1"></i>Transacoes
+                    </a>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-sm">admin@bank.local</span>
+                        <button class="bg-blue-700 px-3 py-1 rounded hover:bg-blue-800">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold text-gray-800 mb-8">
+            <i class="fas fa-chart-line mr-2 text-blue-600"></i>
+            Olá, Admin!
+        </h1>
+
+        <!-- Summary Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white p-6 rounded-lg shadow">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600 text-sm">Saldo Total</p>
+                        <p class="text-3xl font-bold text-green-600">R$ 3.000,00</p>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-wallet text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600 text-sm">Contas</p>
+                        <p class="text-3xl font-bold text-blue-600">2</p>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-university text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600 text-sm">Transacoes (30 dias)</p>
+                        <p class="text-3xl font-bold text-purple-600">8</p>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-exchange-alt text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- My Accounts -->
+            <div class="bg-white p-6 rounded-lg shadow">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-bold text-gray-800">
+                        <i class="fas fa-university mr-2 text-blue-600"></i>Minhas Contas
+                    </h2>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                        <i class="fas fa-plus mr-1"></i>Nova Conta
+                    </button>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="border rounded-lg p-4 hover:shadow-md transition">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="font-semibold text-gray-800">001-234567-8</p>
+                                <p class="text-sm text-gray-600">Conta Corrente</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-2xl font-bold text-green-600">R$ 2.000,00</p>
+                                <p class="text-sm text-gray-500">BRL</p>
+                            </div>
+                        </div>
+                        <div class="mt-3 flex gap-2">
+                            <a href="#" class="text-blue-600 hover:underline text-sm">
+                                <i class="fas fa-eye mr-1"></i>Ver
+                            </a>
+                            <a href="#" class="text-purple-600 hover:underline text-sm">
+                                <i class="fas fa-exchange-alt mr-1"></i>Transferir
+                            </a>
+                            <a href="#" class="text-gray-600 hover:underline text-sm">
+                                <i class="fas fa-list mr-1"></i>Extrato
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="border rounded-lg p-4 hover:shadow-md transition">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="font-semibold text-gray-800">001-987654-3</p>
+                                <p class="text-sm text-gray-600">Conta Corrente</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-2xl font-bold text-green-600">R$ 1.000,00</p>
+                                <p class="text-sm text-gray-500">BRL</p>
+                            </div>
+                        </div>
+                        <div class="mt-3 flex gap-2">
+                            <a href="#" class="text-blue-600 hover:underline text-sm">
+                                <i class="fas fa-eye mr-1"></i>Ver
+                            </a>
+                            <a href="#" class="text-purple-600 hover:underline text-sm">
+                                <i class="fas fa-exchange-alt mr-1"></i>Transferir
+                            </a>
+                            <a href="#" class="text-gray-600 hover:underline text-sm">
+                                <i class="fas fa-list mr-1"></i>Extrato
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Transactions -->
+            <div class="bg-white p-6 rounded-lg shadow">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-bold text-gray-800">
+                        <i class="fas fa-clock mr-2 text-purple-600"></i>Transacoes Recentes
+                    </h2>
+                    <a href="#" class="text-blue-600 hover:underline">Ver todas</a>
+                </div>
+
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between p-3 border rounded hover:bg-gray-50">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full flex items-center justify-center bg-green-100 text-green-600">
+                                <i class="fas fa-arrow-down"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium text-gray-800">Deposito</p>
+                                <p class="text-sm text-gray-500">01/10/2026 14:30</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="font-bold text-green-600">+R$ 500,00</p>
+                            <p class="text-sm text-gray-500">Concluido</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between p-3 border rounded hover:bg-gray-50">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full flex items-center justify-center bg-blue-100 text-blue-600">
+                                <i class="fas fa-exchange-alt"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium text-gray-800">Transferencia</p>
+                                <p class="text-sm text-gray-500">01/10/2026 10:15</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="font-bold text-blue-600">-R$ 200,00</p>
+                            <p class="text-sm text-gray-500">Concluido</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between p-3 border rounded hover:bg-gray-50">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full flex items-center justify-center bg-red-100 text-red-600">
+                                <i class="fas fa-arrow-up"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium text-gray-800">Saque</p>
+                                <p class="text-sm text-gray-500">30/09/2026 16:45</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="font-bold text-red-600">-R$ 100,00</p>
+                            <p class="text-sm text-gray-500">Concluido</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="mt-8">
+            <h2 class="text-xl font-bold text-gray-800 mb-4">
+                <i class="fas fa-bolt mr-2 text-yellow-500"></i>Acoes Rapidas
+            </h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <a href="#" class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition text-center">
+                    <i class="fas fa-plus-circle text-3xl text-blue-600 mb-2"></i>
+                    <p class="font-medium text-gray-800">Nova Conta</p>
+                </a>
+                <a href="#" class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition text-center">
+                    <i class="fas fa-arrow-circle-down text-3xl text-green-600 mb-2"></i>
+                    <p class="font-medium text-gray-800">Depositar</p>
+                </a>
+                <a href="#" class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition text-center">
+                    <i class="fas fa-arrow-circle-up text-3xl text-red-600 mb-2"></i>
+                    <p class="font-medium text-gray-800">Sacar</p>
+                </a>
+                <a href="#" class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition text-center">
+                    <i class="fas fa-exchange-alt text-3xl text-purple-600 mb-2"></i>
+                    <p class="font-medium text-gray-800">Transferir</p>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-gray-400 py-6 mt-12">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p>Bank MVP - Demonstrando arquiteturas MVT, Microservices e Serverless</p>
+            <p class="text-sm mt-2">© 2026 Bank MVP. Apenas para fins educacionais.</p>
+        </div>
+    </footer>
+</body>
+</html>

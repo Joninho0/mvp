@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}Minhas Contas - Bank MVP{% endblock %}
+
+{% block content %}
+<div class="fade-in">
+    <div class="flex justify-between items-center mb-8">
+        <h1 class="text-3xl font-bold text-gray-800">
+            <i class="fas fa-university mr-2 text-blue-600"></i>Minhas Contas
+        </h1>
+        <a href="{% url 'accounts:create' %}" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
+            <i class="fas fa-plus mr-2"></i>Abrir Nova Conta
+        </a>
+    </div>
+
+    {% if accounts %}
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for account in accounts %}
+        <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
+            <div class="flex justify-between items-start mb-4">
+                <div>
+                    <p class="text-sm text-gray-500">Conta</p>
+                    <p class="text-xl font-bold text-gray-800">{{ account.account_number }}</p>
+                </div>
+                <span class="px-2 py-1 text-xs rounded-full {% if account.status == 'ACTIVE' %}bg-green-100 text-green-800{% elif account.status == 'BLOCKED' %}bg-red-100 text-red-800{% else %}bg-gray-100 text-gray-800{% endif %}">
+                    {{ account.get_status_display }}
+                </span>
+            </div>
+
+            <div class="mb-4">
+                <p class="text-sm text-gray-500">Saldo disponivel</p>
+                <p class="text-3xl font-bold text-green-600">{{ account.balance }}</p>
+                <p class="text-sm text-gray-500">{{ account.currency }}</p>
+            </div>
+
+            <div class="border-t pt-4">
+                <div class="grid grid-cols-2 gap-4 text-sm">
+                    <div>
+                        <p class="text-gray-500">Tipo</p>
+                        <p class="font-medium">{{ account.get_account_type_display }}</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-500">Abertura</p>
+                        <p class="font-medium">{{ account.opened_at|date:"d/m/Y" }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4 pt-4 border-t flex flex-wrap gap-3">
+                <a href="{% url 'accounts:detail' account.pk %}" class="text-blue-600 hover:underline text-sm">
+                    <i class="fas fa-eye mr-1"></i>Detalhes
+                </a>
+                <a href="{% url 'accounts:statement' account.pk %}" class="text-purple-600 hover:underline text-sm">
+                    <i class="fas fa-list mr-1"></i>Extrato
+                </a>
+                <a href="{% url 'transactions:transfer' %}?account={{ account.pk %}" class="text-green-600 hover:underline text-sm">
+                    <i class="fas fa-exchange-alt mr-1"></i>Transferir
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="bg-white p-12 rounded-lg shadow text-center">
+        <i class="fas fa-wallet text-6xl text-gray-300 mb-4"></i>
+        <h2 class="text-xl font-bold text-gray-600 mb-2">Voce ainda nao tem contas</h2>
+        <p class="text-gray-500 mb-6">Abra sua primeira conta e comece a usar o Bank MVP</p>
+        <a href="{% url 'accounts:create' %}" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 inline-block">
+            <i class="fas fa-plus mr-2"></i>Abrir Conta
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

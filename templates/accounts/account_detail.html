@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block title %}Conta {{ account.account_number }} - Bank MVP{% endblock %}
+
+{% block content %}
+<div class="fade-in">
+    <div class="flex items-center gap-4 mb-8">
+        <a href="{% url 'accounts:list' %}" class="text-blue-600 hover:underline">
+            <i class="fas fa-arrow-left mr-1"></i>Voltar
+        </a>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Dados da Conta -->
+        <div class="lg:col-span-2">
+            <div class="bg-white p-6 rounded-lg shadow mb-6">
+                <div class="flex justify-between items-start mb-6">
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-800">{{ account.account_number }}</h1>
+                        <p class="text-gray-600">{{ account.get_account_type_display }}</p>
+                    </div>
+                    <span class="px-3 py-1 text-sm rounded-full {% if account.status == 'ACTIVE' %}bg-green-100 text-green-800{% elif account.status == 'BLOCKED' %}bg-red-100 text-red-800{% else %}bg-gray-100 text-gray-800{% endif %}">
+                        {{ account.get_status_display }}
+                    </span>
+                </div>
+
+                <div class="border-t pt-6">
+                    <p class="text-sm text-gray-500">Saldo disponível</p>
+                    <p class="text-4xl font-bold text-green-600">{{ account.balance }}</p>
+                    <p class="text-gray-500">{{ account.currency }}</p>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+                    <div class="bg-gray-50 p-4 rounded">
+                        <p class="text-sm text-gray-500">Limite Diário</p>
+                        <p class="text-lg font-bold text-gray-800">{{ account.daily_limit }}</p>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded">
+                        <p class="text-sm text-gray-500">Usado Hoje</p>
+                        <p class="text-lg font-bold text-gray-800">{{ account.daily_used }}</p>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded">
+                        <p class="text-sm text-gray-500">Limite por Transação</p>
+                        <p class="text-lg font-bold text-gray-800">{{ account.transaction_limit }}</p>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded">
+                        <p class="text-sm text-gray-500">Abertura</p>
+                        <p class="text-lg font-bold text-gray-800">{{ account.opened_at|date:"d/m/Y" }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Extrato Recente -->
+            <div class="bg-white p-6 rounded-lg shadow">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-bold text-gray-800">
+                        <i class="fas fa-list mr-2 text-blue-600"></i>Extrato Recente
+                    </h2>
+                    <a href="{% url 'accounts:statement' account.pk %}" class="text-blue-600 hover:underline">Ver extrato completo</a>
+                </div>
+
+                {% if entries %}
+                <div class="space-y-3">
+                    {% for entry in entries %}
+                    <div class="flex items-center justify-between p-3 border rounded hover:bg-gray-50">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full flex items-center justify-center {% if entry.entry_type == 'DEBIT' %}bg-red-100 text-red-600{% else %}bg-green-100 text-green-600{% endif %}">
+                                <i class="fas {% if entry.entry_type == 'DEBIT' %}fa-arrow-up{% else %}fa-arrow-down{% endif %}"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium text-gray-800">{{ entry.description|default:"Transação" }}</p>
+                                <p class="text-sm text-gray-500">{{ entry.created_at|date:"d/m/Y H:i" }}</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="font-bold {% if entry.entry_type == 'DEBIT' %}text-red-600{% else %}text-green-600{% endif %}">
+                                {% if entry.entry_type == 'DEBIT' %}-{% else %}+{% endif %}{{ entry.amount }}
+                            </p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="text-gray-500 text-center py-8">Nenhuma transação ainda.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Ações -->
+        <div>
+            <div class="bg-white p-6 rounded-lg shadow sticky top-4">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">
+                    <i class="fas fa-bolt mr-2 text-yellow-500"></i>Ações
+                </h2>
+
+                <div class="space-y-3">
+                    <a href="{% url 'transactions:deposit' %}?account={{ account.pk }}" class="block w-full bg-green-600 text-white text-center py-3 rounded hover:bg-green-700 transition">
+                        <i class="fas fa-arrow-down mr-2"></i>Depositar
+                    </a>
+                    <a href="{% url 'transactions:withdraw' %}?account={{ account.pk }}" class="block w-full bg-red-600 text-white text-center py-3 rounded hover:bg-red-700 transition">
+                        <i class="fas fa-arrow-up mr-2"></i>Sacar
+                    </a>
+                    <a href="{% url 'transactions:transfer' %}?account={{ account.pk }}" class="block w-full bg-blue-600 text-white text-center py-3 rounded hover:bg-blue-700 transition">
+                        <i class="fas fa-exchange-alt mr-2"></i>Transferir
+                    </a>
+                </div>
+
+                <div class="mt-6 pt-6 border-t">
+                    <h3 class="font-bold text-gray-800 mb-3">Informações</h3>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li><i class="fas fa-info-circle mr-2 text-blue-500"></i>Saldo atualizado em tempo real</li>
+                        <li><i class="fas fa-info-circle mr-2 text-blue-500"></i>Limites renovados às 00:00</li>
+                        <li><i class="fas fa-info-circle mr-2 text-blue-500"></i>Todas transações são registradas</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
