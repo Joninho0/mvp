@@ -1,1 +1,0 @@
-# Core package - Domain logic and shared utilities

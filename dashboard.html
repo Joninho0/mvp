@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Seu painel financeiro Meridian." />
+    <title>Meridian | Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Lora:wght@400;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./css/main.css?v=7" />
+  </head>
+  <body class="dashboard-page">
+    <div class="dashboard-layout">
+      <aside class="dashboard-sidebar">
+        <a class="brand dashboard-brand" href="./index.html" aria-label="Meridian, página inicial">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span>Meridian</span>
+        </a>
+
+        <div class="sidebar-label">MENU</div>
+        <nav class="dashboard-nav" aria-label="Navegação do dashboard">
+          <a class="is-current" href="#overview"><span class="nav-symbol symbol-home" aria-hidden="true"></span>Visão geral</a>
+          <a href="#transactions"><span class="nav-symbol symbol-activity" aria-hidden="true"></span>Transações</a>
+          <a href="#accounts"><span class="nav-symbol symbol-wallet" aria-hidden="true"></span>Minhas contas</a>
+          <a href="#goals"><span class="nav-symbol symbol-target" aria-hidden="true"></span>Metas</a>
+        </nav>
+
+        <div class="sidebar-bottom">
+          <div class="help-card">
+            <span class="help-card__icon" aria-hidden="true">?</span>
+            <strong>Precisa de ajuda?</strong>
+            <p>Estamos aqui para você, a qualquer hora.</p>
+            <a href="mailto:suporte@meridian.example">Falar com suporte</a>
+          </div>
+          <a class="sign-out" href="./account.html#login"><span class="nav-symbol symbol-exit" aria-hidden="true"></span>Sair da conta</a>
+        </div>
+      </aside>
+
+      <main class="dashboard-main" id="overview">
+        <header class="dashboard-header">
+          <div class="dashboard-header__greeting">
+            <span class="dashboard-date">QUINTA-FEIRA, 8 DE OUTUBRO</span>
+            <h1>Bom dia, Alex</h1>
+            <p>Aqui está o resumo das suas finanças.</p>
+          </div>
+          <div class="dashboard-user">
+            <span class="notification-dot" aria-label="Notificações"></span>
+            <span class="avatar" aria-hidden="true">AM</span>
+            <div>
+              <strong>Alex Morgan</strong>
+              <span>Conta pessoal</span>
+            </div>
+          </div>
+        </header>
+
+        <div class="demo-notice" role="note">
+          <span class="demo-notice__dot" aria-hidden="true"></span>
+          Ambiente de demonstração. Os saldos e as transações exibidos são ilustrativos.
+        </div>
+
+        <section class="dashboard-overview" aria-label="Resumo financeiro">
+          <article class="balance-card" id="accounts">
+            <div class="balance-card__top">
+              <div>
+                <span class="section-kicker">SALDO TOTAL</span>
+                <h2 class="balance-amount" data-balance="$12,480.50">$12,480.50</h2>
+              </div>
+              <button class="balance-toggle" type="button" aria-pressed="false">Ocultar saldo</button>
+            </div>
+            <div class="balance-card__footer">
+              <span><span class="account-dot"></span> Conta Corrente <span class="account-number">•••• 2849</span></span>
+              <span class="balance-change">+2,4% este mês</span>
+            </div>
+            <div class="balance-card__decoration" aria-hidden="true"></div>
+          </article>
+
+          <article class="savings-card" id="goals">
+            <div class="savings-card__top">
+              <span class="section-kicker">POUPANÇA</span>
+              <span class="savings-icon" aria-hidden="true"></span>
+            </div>
+            <h2 class="savings-amount" data-balance="$4,250.00">$4,250.00</h2>
+            <p>Meta: viagem de férias</p>
+            <div class="goal-progress" role="progressbar" aria-label="Progresso da meta de viagem" aria-valuenow="68" aria-valuemin="0" aria-valuemax="100">
+              <span></span>
+            </div>
+            <div class="goal-caption"><span>68% da meta</span><span>$6,250.00</span></div>
+          </article>
+        </section>
+
+        <section class="quick-actions" aria-label="Ações rápidas">
+          <h2>Ações rápidas</h2>
+          <div class="quick-action-list">
+            <button class="quick-action" type="button" data-demo-action="Transferir">
+              <span class="quick-action__icon transfer-icon" aria-hidden="true"></span>
+              <span>Transferir</span>
+            </button>
+            <button class="quick-action" type="button" data-demo-action="Depositar">
+              <span class="quick-action__icon deposit-icon" aria-hidden="true"></span>
+              <span>Depositar</span>
+            </button>
+            <button class="quick-action" type="button" data-demo-action="Pagar conta">
+              <span class="quick-action__icon bill-icon" aria-hidden="true"></span>
+              <span>Pagar conta</span>
+            </button>
+            <button class="quick-action" type="button" data-demo-action="Ver cartões">
+              <span class="quick-action__icon card-icon" aria-hidden="true"></span>
+              <span>Ver cartões</span>
+            </button>
+          </div>
+        </section>
+
+        <section class="transactions-section" id="transactions">
+          <div class="section-heading">
+            <div>
+              <span class="section-kicker">ATIVIDADE RECENTE</span>
+              <h2>Transações</h2>
+            </div>
+            <a href="#transactions">Ver todas</a>
+          </div>
+
+          <div class="transaction-filters" aria-label="Filtrar transações">
+            <button class="transaction-filter is-selected" type="button" data-filter="all" aria-pressed="true">Todas</button>
+            <button class="transaction-filter" type="button" data-filter="income" aria-pressed="false">Entradas</button>
+            <button class="transaction-filter" type="button" data-filter="expense" aria-pressed="false">Saídas</button>
+          </div>
+
+          <div class="transaction-list">
+            <article class="transaction-row" data-type="income">
+              <span class="transaction-icon transaction-icon--income" aria-hidden="true">+</span>
+              <div class="transaction-info">
+                <strong>Salário</strong>
+                <span>Hoje, 9:41 · Depósito recebido</span>
+              </div>
+              <span class="transaction-category">Renda</span>
+              <strong class="transaction-value is-income">+$3,250.00</strong>
+            </article>
+            <article class="transaction-row" data-type="expense">
+              <span class="transaction-icon transaction-icon--shopping" aria-hidden="true"></span>
+              <div class="transaction-info">
+                <strong>Mercado Central</strong>
+                <span>Ontem, 18:24 · Cartão de débito</span>
+              </div>
+              <span class="transaction-category">Compras</span>
+              <strong class="transaction-value">−$86.42</strong>
+            </article>
+            <article class="transaction-row" data-type="expense">
+              <span class="transaction-icon transaction-icon--home" aria-hidden="true"></span>
+              <div class="transaction-info">
+                <strong>Aluguel</strong>
+                <span>6 de outubro · Pagamento agendado</span>
+              </div>
+              <span class="transaction-category">Moradia</span>
+              <strong class="transaction-value">−$1,450.00</strong>
+            </article>
+            <article class="transaction-row" data-type="income">
+              <span class="transaction-icon transaction-icon--income" aria-hidden="true">+</span>
+              <div class="transaction-info">
+                <strong>Reembolso</strong>
+                <span>4 de outubro · Crédito recebido</span>
+              </div>
+              <span class="transaction-category">Outros</span>
+              <strong class="transaction-value is-income">+$42.80</strong>
+            </article>
+          </div>
+          <p class="empty-transactions" hidden>Nenhuma transação neste filtro.</p>
+        </section>
+      </main>
+    </div>
+
+    <div class="dashboard-toast" role="status" aria-live="polite" hidden></div>
+
+    <script>
+      const balanceToggle = document.querySelector('.balance-toggle');
+      const balanceValues = document.querySelectorAll('[data-balance]');
+
+      balanceToggle.addEventListener('click', () => {
+        const isHidden = balanceToggle.getAttribute('aria-pressed') === 'true';
+        balanceToggle.setAttribute('aria-pressed', String(!isHidden));
+        balanceToggle.textContent = isHidden ? 'Ocultar saldo' : 'Mostrar saldo';
+        balanceValues.forEach((value) => {
+          value.textContent = isHidden ? value.dataset.balance : '••••••';
+        });
+      });
+
+      const filters = document.querySelectorAll('.transaction-filter');
+      const transactions = document.querySelectorAll('.transaction-row');
+      const emptyTransactions = document.querySelector('.empty-transactions');
+
+      filters.forEach((filter) => {
+        filter.addEventListener('click', () => {
+          const selectedType = filter.dataset.filter;
+          filters.forEach((button) => {
+            const selected = button === filter;
+            button.classList.toggle('is-selected', selected);
+            button.setAttribute('aria-pressed', String(selected));
+          });
+
+          let visibleCount = 0;
+          transactions.forEach((transaction) => {
+            const visible = selectedType === 'all' || transaction.dataset.type === selectedType;
+            transaction.hidden = !visible;
+            if (visible) visibleCount += 1;
+          });
+          emptyTransactions.hidden = visibleCount > 0;
+        });
+      });
+
+      const toast = document.querySelector('.dashboard-toast');
+      document.querySelectorAll('[data-demo-action]').forEach((button) => {
+        button.addEventListener('click', () => {
+          toast.textContent = `${button.dataset.demoAction}: disponível quando a conta estiver conectada a um serviço bancário.`;
+          toast.hidden = false;
+          window.clearTimeout(toast.timeoutId);
+          toast.timeoutId = window.setTimeout(() => {
+            toast.hidden = true;
+          }, 3600);
+        });
+      });
+    </script>
+  </body>
+</html>

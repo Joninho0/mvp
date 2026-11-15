@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Meridian | Conta</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Lora:wght@400;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./css/main.css?v=7" />
+  </head>
+  <body class="auth-page">
+    <div class="page-shell auth-shell">
+      <header class="main-header auth-header">
+        <a class="brand" href="./index.html" aria-label="Ir para a página inicial">
+          <div class="brand-mark" aria-hidden="true"></div>
+          <span>Meridian</span>
+        </a>
+
+        <nav class="auth-header__nav" aria-label="Navegação da conta">
+          <a href="./dashboard.html">Prévia do dashboard</a>
+          <a href="./index.html">Voltar ao início</a>
+        </nav>
+      </header>
+
+      <main class="auth-layout">
+        <section class="auth-hero" aria-label="Texto de apresentação">
+          <p class="eyebrow">Seu banco, do jeito que você vive</p>
+          <h1>Faça parte do Meridian.</h1>
+          <p class="lead auth-lead">
+            Controle do dia a dia, metas, poupança e suporte real em um só lugar.
+          </p>
+
+          <div class="auth-points" aria-label="Benefícios">
+            <div>
+              <span class="auth-dot"></span>
+              <span>Sem mensalidade</span>
+            </div>
+            <div>
+              <span class="auth-dot"></span>
+              <span>Atendimento 24/7</span>
+            </div>
+            <div>
+              <span class="auth-dot"></span>
+              <span>Transferências rápidas</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="auth-card" aria-label="Formulário de login ou cadastro">
+          <div class="auth-tabs" role="tablist" aria-label="Login ou cadastro">
+            <button type="button" class="auth-tab is-active" data-target="login" role="tab" aria-selected="true">Entrar</button>
+            <button type="button" class="auth-tab" data-target="signup" role="tab" aria-selected="false">Criar conta</button>
+          </div>
+
+          <form id="login" class="auth-form is-visible" novalidate>
+            <div class="field-group">
+              <label for="login-email">E-mail</label>
+              <input id="login-email" type="email" placeholder="seuemail@email.com" />
+            </div>
+
+            <div class="field-group">
+              <div class="field-row">
+                <label for="login-password">Senha</label>
+                <a href="#">Esqueci</a>
+              </div>
+              <input id="login-password" type="password" placeholder="Sua senha" />
+            </div>
+
+            <label class="checkbox-row" for="remember-me">
+              <input id="remember-me" type="checkbox" />
+              <span>Lembrar de mim</span>
+            </label>
+
+            <button type="submit" class="primary-btn auth-submit">Entrar</button>
+          </form>
+
+          <form id="signup" class="auth-form" novalidate>
+            <div class="field-group">
+              <label for="signup-name">Nome completo</label>
+              <input id="signup-name" type="text" placeholder="Seu nome" />
+            </div>
+
+            <div class="field-group">
+              <label for="signup-email">E-mail</label>
+              <input id="signup-email" type="email" placeholder="seuemail@email.com" />
+            </div>
+
+            <div class="field-group">
+              <label for="signup-password">Senha</label>
+              <input id="signup-password" type="password" placeholder="Crie uma senha" />
+            </div>
+
+            <label class="checkbox-row" for="terms">
+              <input id="terms" type="checkbox" />
+              <span>Aceito os termos e condições</span>
+            </label>
+
+            <button type="submit" class="primary-btn auth-submit">Criar conta</button>
+          </form>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      const tabs = document.querySelectorAll('.auth-tab');
+      const forms = document.querySelectorAll('.auth-form');
+
+      tabs.forEach((tab) => {
+        tab.addEventListener('click', () => {
+          const target = tab.dataset.target;
+
+          tabs.forEach((btn) => {
+            const isActive = btn === tab;
+            btn.classList.toggle('is-active', isActive);
+            btn.setAttribute('aria-selected', String(isActive));
+          });
+
+          forms.forEach((form) => {
+            const show = form.id === target;
+            form.classList.toggle('is-visible', show);
+          });
+        });
+      });
+
+      document.querySelectorAll('.auth-form').forEach((form) => {
+        form.addEventListener('submit', (event) => {
+          event.preventDefault();
+          const button = form.querySelector('.auth-submit');
+          const originalText = button.textContent;
+          button.textContent = 'Enviado';
+          button.disabled = true;
+
+          setTimeout(() => {
+            button.textContent = originalText;
+            button.disabled = false;
+            form.reset();
+          }, 1200);
+        });
+      });
+    </script>
+  </body>
+</html>
